@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simply_todo/data/bloc/cubits/item_cubit_state.dart';
 import 'package:simply_todo/data/database/database_helper.dart';
 import 'package:simply_todo/data/models/item.dart';
+import 'package:simply_todo/util/values/enums.dart';
 
 class ItemCubit extends Cubit<ItemState> {
   final DatabaseHelper dbHelper;
@@ -96,5 +97,18 @@ class ItemCubit extends Cubit<ItemState> {
       log('Failed to delete item from list: $e');
       return false;
     }
+  }
+
+  void filterItemsByCategory(ItemCategory category) async {
+    // If 'All' is selected, fetch all items
+    if (category == ItemCategory.All) {
+      fetchItemData();
+      return;
+    }
+
+    List<Item> filteredList = state.itemsList.where((item) {
+      return item.category == category;
+    }).toList();
+    emit(ItemState(filteredList));
   }
 }

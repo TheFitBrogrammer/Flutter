@@ -18,8 +18,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  final TextEditingController titleController = TextEditingController();
   // ignore: prefer_final_fields
   ItemCategory _selectedCategory = ItemCategory.All;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ItemCubit>().fetchItemData();
+    WidgetsFlutterBinding.ensureInitialized();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +41,17 @@ class _HomeScreenState extends State<HomeScreen> {
     Color appBarAndBottomNavColor = const Color(0xFF1c1c5e);
     Color floatingActionButtonColor = const Color(0xFFff6a06);
     Color textColor = Colors.white;
-    Color iconAndTextColor = Colors.white; // White color for text and icons
-
+    Color iconAndTextColor = Colors.white;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarAndBottomNavColor,
         title: Text(
           widget.title,
-          style:
-              TextStyle(color: textColor), // Apply white color to AppBar title
+          style: TextStyle(color: textColor),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.menu,
-                color: textColor), // Apply white color to menu icon
+            icon: Icon(Icons.menu, color: textColor),
             onPressed: () {
               // Implement menu action
             },
@@ -64,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 final item = items[index];
                 return ListTile(
-                  title: Text(item.title, style: TextStyle(color: textColor)),
+                  title: Text(item.title,
+                      style: const TextStyle(color: Colors.black)),
                   // Further implementation details such as leading, trailing, onTap
                 );
               },
@@ -82,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: appBarAndBottomNavColor, // Match AppBar color
-        selectedItemColor: iconAndTextColor, // White color for selected item
+        backgroundColor: appBarAndBottomNavColor,
+        selectedItemColor: iconAndTextColor,
         unselectedItemColor: iconAndTextColor.withOpacity(
             0.6), // Slightly faded white color for unselected items
         currentIndex: _selectedIndex,
@@ -103,52 +115,101 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      // Update your category view based on the index, if necessary
+      switch (index) {
+        case 0:
+          _selectedCategory = ItemCategory.All;
+          break;
+        case 1:
+          _selectedCategory = ItemCategory.Urgent;
+          break;
+        case 2:
+          _selectedCategory = ItemCategory.Important;
+          break;
+        case 3:
+          _selectedCategory = ItemCategory.Misc;
+          break;
+        case 4:
+          _selectedCategory = ItemCategory.Shopping;
+          break;
+        default:
+          _selectedCategory = ItemCategory.All;
+      }
     });
   }
 
   void _showAddItemForm(BuildContext context, ItemCubit itemCubit) {
-    final TextEditingController titleController = TextEditingController();
+    ItemCategory selectedCategory = ItemCategory.Misc;
+    titleController.clear();
+
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          // Return your form here
-          return Container(
-            padding: const EdgeInsets.all(20),
-            height: 400, // Adjust the height as needed
-            child: Column(
-              children: [
-                TextField(
-                  decoration: const InputDecoration(labelText: 'Item Title'),
-                  controller: titleController,
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              // Removes ALL category from category menu.
+              final categories = ItemCategory.values
+                  .where((c) => c != ItemCategory.All)
+                  .toList();
+              return Container(
+                padding: const EdgeInsets.all(20),
+                height: 400,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      decoration:
+                          const InputDecoration(labelText: 'Item Title'),
+                      controller: titleController,
+                    ),
+                    DropdownButton<ItemCategory>(
+                      value: selectedCategory,
+                      onChanged: (ItemCategory? newValue) {
+                        setState(() {
+                          if (newValue != null) {
+                            selectedCategory = newValue;
+                          }
+                        });
+                      },
+                      items: categories.map((ItemCategory category) {
+                        return DropdownMenuItem<ItemCategory>(
+                          value: category,
+                          child: Text(category.toString().split('.').last),
+                        );
+                      }).toList(),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (titleController.text.trim().isNotEmpty) {
+                          final navigator = Navigator.of(context);
+                          final scaffoldMessenger =
+                              ScaffoldMessenger.of(context);
+                          final newItem = Item(
+                            indexId: itemCubit.state.itemsList.length,
+                            title: titleController.text,
+                            date: DateTime.now().millisecondsSinceEpoch,
+                            category: selectedCategory,
+                          );
+                          bool success =
+                              await itemCubit.addItem(newItem.toMap());
+                          if (success) {
+                            scaffoldMessenger.showSnackBar(SnackBar(
+                              content: Text(
+                                  "New item added to ${selectedCategory.name}."),
+                              duration: const Duration(milliseconds: 2000),
+                            ));
+                            itemCubit.fetchItemData();
+                            navigator.pop();
+                          } else {
+                            log("Error occurred while adding item");
+                          }
+                        }
+                      },
+                      child: const Text('Add Item'),
+                    ),
+                  ],
                 ),
-                // Add more fields for item details like category selection
-                ElevatedButton(
-                  onPressed: () async {
-                    final navigator = Navigator.of(context);
-                    final scaffoldMessenger = ScaffoldMessenger.of(context);
-                    final newItem = Item(
-                        indexId: itemCubit.state.itemsList.length,
-                        title: titleController.text.toString(),
-                        date: DateTime.now().millisecondsSinceEpoch,
-                        category: ItemCategory.Misc);
-                    bool success = await itemCubit.addItem(newItem.toMap());
-                    // titleController.dispose();
-                    if (success) {
-                      scaffoldMessenger.showSnackBar(const SnackBar(
-                        content: Text("New item added"),
-                        duration: Duration(milliseconds: 2000),
-                      ));
-                      itemCubit.fetchItemData();
-                      navigator.pop();
-                    } else {
-                      log("ASYNC Error occurred");
-                    }
-                  },
-                  child: const Text('Add Item'),
-                ),
-              ],
-            ),
+              );
+            },
           );
         });
   }
