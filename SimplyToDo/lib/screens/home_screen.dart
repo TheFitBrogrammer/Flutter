@@ -37,6 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const appBarTitleStyle = TextStyle(
+      fontFamily: 'DancingScript', // Specify the font family
+      fontWeight: FontWeight.bold, // Choose the weight, if necessary
+      fontSize: 40, // Set the size, if you want to customize it
+      color: Colors.white, // Set the color, if you want to customize it
+    );
     final itemCubit = context.read<ItemCubit>();
     Color appBarAndBottomNavColor = const Color(0xFF1c1c5e);
     Color floatingActionButtonColor = const Color(0xFFff6a06);
@@ -47,7 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: appBarAndBottomNavColor,
         title: Text(
           widget.title,
-          style: TextStyle(color: textColor),
+          style: appBarTitleStyle,
+          // style: TextStyle(color: textColor),
         ),
         actions: [
           IconButton(
