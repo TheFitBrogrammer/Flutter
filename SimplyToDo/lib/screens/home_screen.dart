@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
 import 'package:simply_todo/data/bloc/cubits/item_cubit_state.dart';
 import 'package:simply_todo/data/models/item.dart';
@@ -38,33 +39,86 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     const appBarTitleStyle = TextStyle(
-      fontFamily: 'DancingScript', // Specify the font family
-      fontWeight: FontWeight.bold, // Choose the weight, if necessary
-      fontSize: 40, // Set the size, if you want to customize it
-      color: Colors.white, // Set the color, if you want to customize it
+      fontFamily: 'DancingScript',
+      fontWeight: FontWeight.bold,
+      fontSize: 40,
+      color: Colors.white,
     );
     final itemCubit = context.read<ItemCubit>();
-    Color appBarAndBottomNavColor = const Color(0xFF1c1c5e);
-    Color floatingActionButtonColor = const Color(0xFFff6a06);
-    Color textColor = Colors.white;
-    Color iconAndTextColor = Colors.white;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appBarAndBottomNavColor,
-        title: Text(
-          widget.title,
-          style: appBarTitleStyle,
-          // style: TextStyle(color: textColor),
+        title: Text(widget.title, style: appBarTitleStyle),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.menu,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.menu, color: textColor),
+            icon: const Icon(
+              Icons.calendar_today,
+              // color: iconAndTextColor,
+            ),
             onPressed: () {
-              // Implement menu action
+              // Implement calendar action
+              log("Calendar button tapped.");
             },
           ),
         ],
       ),
+      // Drawer on the left side of the screen
+      drawer: Drawer(
+        child: Container(
+          color: const Color(0xFF191818),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color(0xFF191818),
+                ),
+                child: Text('Menu',
+                    style: TextStyle(color: Colors.white, fontSize: 24)),
+              ),
+              ListTile(
+                title: const Text('Settings',
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                onTap: () {
+                  // Navigate to the Settings screen
+                  log("Settings menu option selected.");
+                },
+              ),
+              const Divider(color: Colors.grey),
+              ListTile(
+                title: const Text('Legal',
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                onTap: () {
+                  // Navigate to the Legal screen
+                  log("Legal menu option selected.");
+                },
+              ),
+              const Divider(color: Colors.grey),
+              ListTile(
+                title: const Text('Contact/Support',
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                onTap: () {
+                  // Navigate to the Contact screen
+                  log("Contact/Support menu option selected.");
+                },
+              ),
+              const Divider(color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
+
       body: BlocBuilder<ItemCubit, ItemState>(
         builder: (context, state) {
           if (state.itemsList.isEmpty) {
@@ -77,22 +131,106 @@ class _HomeScreenState extends State<HomeScreen> {
               return item.category == _selectedCategory;
             }).toList();
 
-            return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return ListTile(
-                  title: Text(item.title,
-                      style: const TextStyle(color: Colors.black)),
-                  // Further implementation details such as leading, trailing, onTap
-                );
-              },
+            return Column(
+              children: [
+                Expanded(
+                  child: ReorderableListView.builder(
+                    itemCount: items.length,
+                    onReorder: (oldIndex, newIndex) {
+                      itemCubit.reorderItem(oldIndex, newIndex);
+                    },
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+
+                      return Slidable(
+                        key: Key(item.id.toString()),
+                        startActionPane: ActionPane(
+                          motion: const BehindMotion(),
+                          extentRatio: 0.25,
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) async {
+                                final scaffoldMessenger =
+                                    ScaffoldMessenger.of(context);
+                                bool success =
+                                    await itemCubit.deleteItem(item.id!);
+                                if (success) {
+                                  scaffoldMessenger.showSnackBar(const SnackBar(
+                                    content: Text("Item deleted."),
+                                    duration: Duration(milliseconds: 2000),
+                                  ));
+                                  log("Item with ID#: ${item.id} successfully deleted.");
+                                  // await itemCubit.fetchItemData();
+                                } else {
+                                  log("ASYNC Error occurred");
+                                }
+                              },
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                            ),
+                          ],
+                        ),
+                        endActionPane: ActionPane(
+                          motion: const BehindMotion(),
+                          extentRatio: 0.25,
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                log("Edit icon button tapped for item id# ${item.id}.");
+                              },
+                              backgroundColor: Colors.cyan,
+                              foregroundColor: Colors.white,
+                              icon: Icons.edit,
+                              label: 'Edit',
+                            ),
+                          ],
+                        ),
+                        child: ListTile(
+                          leading: Checkbox(
+                            value: item.isDone,
+                            onChanged: (bool? value) async {
+                              final updatedItem = item.copyWith(isDone: value!);
+                              bool success =
+                                  await itemCubit.updateItem(updatedItem);
+                              if (success) {
+                                log("Item with ID#: ${item.id} updated.");
+                                // await itemCubit.fetchItemData();
+                              } else {
+                                log("ASYNC Error occurred");
+                              }
+                            },
+                          ),
+                          title: Text(
+                            item.title,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              decoration: item.isDone
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                            ),
+                          ),
+                          trailing: ReorderableDragStartListener(
+                            index: index,
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10.0),
+                              child:
+                                  Icon(Icons.drag_handle), // Drag handle icon
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: floatingActionButtonColor,
         onPressed: () => _showAddItemForm(context, itemCubit),
         tooltip: 'Add Item',
         child: const Icon(
@@ -101,12 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: appBarAndBottomNavColor,
-        selectedItemColor: iconAndTextColor,
-        unselectedItemColor: iconAndTextColor.withOpacity(
-            0.6), // Slightly faded white color for unselected items
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: _onCategoryTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'All Items'),
           BottomNavigationBarItem(icon: Icon(Icons.warning), label: 'Urgent'),
@@ -119,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _onItemTapped(int index) {
+  void _onCategoryTapped(int index) {
     setState(() {
       _selectedIndex = index;
       switch (index) {
@@ -193,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           final newItem = Item(
                             indexId: itemCubit.state.itemsList.length,
                             title: titleController.text,
-                            date: DateTime.now().millisecondsSinceEpoch,
+                            // date: DateTime.now().millisecondsSinceEpoch,
                             category: selectedCategory,
                           );
                           bool success =
@@ -204,14 +338,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   "New item added to ${selectedCategory.name}."),
                               duration: const Duration(milliseconds: 2000),
                             ));
-                            itemCubit.fetchItemData();
+                            // itemCubit.fetchItemData();
                             navigator.pop();
                           } else {
                             log("Error occurred while adding item");
                           }
                         }
                       },
-                      child: const Text('Add Item'),
+                      child: const Text('Add Item',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),

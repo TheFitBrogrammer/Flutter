@@ -11,7 +11,6 @@ class ItemCubit extends Cubit<ItemState> {
 
   ItemCubit({required this.dbHelper}) : super(ItemState([]));
 
-  // Query all items in todo list from database into useable map.
   Future<void> fetchItemData() async {
     try {
       List<Map<String, dynamic>> itemListMaps = await dbHelper.queryItems();
@@ -62,25 +61,29 @@ class ItemCubit extends Cubit<ItemState> {
     }
   }
 
-  Future<bool> updateItemOrder(List<Item> items) async {
-    try {
-      for (int i = 0; i < items.length; i++) {
-        items[i].indexId = i;
-      }
-      List<Item> updateditems = List<Item>.from(state.itemsList);
-      for (var item in items) {
-        int index = updateditems.indexWhere((p) => p.id == item.id);
-        if (index != -1) {
-          updateditems[index] = item;
-        }
-      }
-      updateditems.sort((a, b) => a.indexId.compareTo(b.indexId));
-      for (int i = 0; i < updateditems.length; i++) {
-        updateditems[i].indexId = i;
-      }
-      await dbHelper.updateItemOrder(updateditems);
-      emit(state.copyWith(itemsList: updateditems));
+  void reorderItem(int oldIndex, int newIndex) {
+    var items = List<Item>.from(state.itemsList);
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    final item = items.removeAt(oldIndex);
+    items.insert(newIndex, item);
 
+    for (int i = 0; i < items.length; i++) {
+      items[i].indexId = i;
+    }
+
+    updateItemOrder(items);
+  }
+
+  Future<bool> updateItemOrder(List<Item> reorderedItems) async {
+    try {
+      for (int i = 0; i < reorderedItems.length; i++) {
+        reorderedItems[i].indexId = i;
+      }
+      await dbHelper.updateItemOrder(reorderedItems);
+
+      emit(ItemState(reorderedItems));
       return true;
     } catch (e) {
       log('ERROR: Failed to reorder itemsList: $e');
@@ -91,7 +94,10 @@ class ItemCubit extends Cubit<ItemState> {
   Future<bool> deleteItem(int itemId) async {
     try {
       await dbHelper.deleteItem(itemId);
-      state.itemsList.removeWhere((item) => item.id == itemId);
+      List<Item> updatedItemsList = List<Item>.from(state.itemsList);
+      updatedItemsList.removeWhere((item) => item.id == itemId);
+
+      emit(ItemState(updatedItemsList));
       return true;
     } catch (e) {
       log('Failed to delete item from list: $e');
@@ -100,12 +106,9 @@ class ItemCubit extends Cubit<ItemState> {
   }
 
   void filterItemsByCategory(ItemCategory category) async {
-    // If 'All' is selected, fetch all items
     if (category == ItemCategory.All) {
-      fetchItemData();
       return;
     }
-
     List<Item> filteredList = state.itemsList.where((item) {
       return item.category == category;
     }).toList();

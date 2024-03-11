@@ -14,7 +14,7 @@ class Item {
       required this.title,
       this.isDone = false,
       required this.category,
-      required this.date});
+      this.date = 0});
 
   // Maps the item to a usable variable from the database.
   static Item fromMap(Map<String, dynamic> map) {
@@ -37,5 +37,23 @@ class Item {
       'category': category.index,
       'date': date,
     };
+  }
+
+  Item copyWith({
+    int? id,
+    int? indexId,
+    String? title,
+    bool? isDone,
+    ItemCategory? category,
+    int? date,
+  }) {
+    return Item(
+      id: id ?? this.id,
+      indexId: indexId ?? this.indexId,
+      title: title ?? this.title,
+      isDone: isDone ?? this.isDone,
+      category: category ?? this.category,
+      date: date ?? this.date,
+    );
   }
 }
