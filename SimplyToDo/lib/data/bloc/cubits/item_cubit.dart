@@ -54,6 +54,7 @@ class ItemCubit extends Cubit<ItemState> {
       int index =
           state.itemsList.indexWhere((item) => item.id == updatedItem.id);
       state.itemsList[index] = updatedItem;
+      emit(state.copyWith(itemsList: List<Item>.from(state.itemsList)));
       return true;
     } catch (e) {
       log('Failed to update todo item: $e');

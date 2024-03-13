@@ -69,7 +69,7 @@ class SimplyTodo extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomeScreen(title: 'Simply ToDo'),
+      home: const HomeScreen(),
     );
   }
 }
