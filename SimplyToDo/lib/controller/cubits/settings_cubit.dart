@@ -26,12 +26,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(darkMode: value));
   }
 
-  Future<void> setAnimations(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('animations_on', value);
-    emit(state.copyWith(animationsOn: value));
-  }
-
   Future<void> setAllItemsFilter(int value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('all_items_filter', value);

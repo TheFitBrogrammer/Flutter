@@ -11,7 +11,6 @@ class SettingsState {
 
   SettingsState copyWith({
     bool? darkMode,
-    bool? animationsOn,
     int? allItemsFilter,
     int? defaultCategory,
   }) {
