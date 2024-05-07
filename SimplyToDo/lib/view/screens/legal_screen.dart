@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit.dart';
-import 'package:simply_todo/data/models/legal_packages.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit.dart';
+import 'package:simply_todo/model/object_models/legal_packages.dart';
 
 class LegalScreen extends StatelessWidget {
   final SettingsCubit settingsCubit;

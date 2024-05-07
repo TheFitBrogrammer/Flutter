@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_declarations
 
 import 'package:path/path.dart';
-import 'package:simply_todo/data/models/item.dart';
+import 'package:simply_todo/model/object_models/item.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {

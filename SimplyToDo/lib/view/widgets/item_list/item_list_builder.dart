@@ -1,12 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit_state.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit_state.dart';
-import 'package:simply_todo/data/models/item.dart';
+import 'package:simply_todo/controller/cubits/item_cubit.dart';
+import 'package:simply_todo/controller/cubits/item_cubit_state.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit_state.dart';
+import 'package:simply_todo/model/object_models/item.dart';
 import 'package:simply_todo/util/values/enums.dart';
-import 'package:simply_todo/util/widgets/item_list/item_list_tile.dart';
+import 'package:simply_todo/view/widgets/item_list/item_list_tile.dart';
 
 Widget buildItemList(
   BuildContext context,

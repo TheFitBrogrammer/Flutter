@@ -1,4 +1,4 @@
-import 'package:simply_todo/data/models/item.dart';
+import 'package:simply_todo/model/object_models/item.dart';
 
 class ItemState {
   List<Item> itemsList;

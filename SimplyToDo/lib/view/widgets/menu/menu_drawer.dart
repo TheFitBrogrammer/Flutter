@@ -3,8 +3,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit_state.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit_state.dart';
+import 'package:simply_todo/util/values/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class kDrawer_Menu extends StatefulWidget {
@@ -34,8 +35,8 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
   }
 
   void _sendEmail(BuildContext context) {
-    String toEmail = 'mulltechsoftware@gmail.com';
-    String subject = 'SimplyToDo: Support Request';
+    String toEmail = kString_ToEmail;
+    String subject = kString_EmailSubject;
     launchEmail(toEmail, subject, context);
   }
 
@@ -53,19 +54,19 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
               decoration: BoxDecoration(
                 color: Color(0xFF191818),
               ),
-              child: Text('Menu',
+              child: Text(kString_MenuTitle,
                   style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
             ExpansionTile(
               leading: const Icon(Icons.settings, color: Colors.white),
-              title: const Text('Settings',
+              title: const Text(kString_MenuSettings,
                   style: TextStyle(color: Colors.white, fontSize: 16)),
               children: [
 // ************************** DARK MODE **************************
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, settingsState) {
                     return SwitchListTile(
-                      title: const Text('Dark Mode',
+                      title: const Text(kString_MenuDarkMode,
                           style: TextStyle(color: Colors.white)),
                       value: settingsState.darkMode,
                       onChanged: (value) {
@@ -79,11 +80,11 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, settingsState) {
                     return ExpansionTile(
-                      title: const Text('Default Item Tag',
+                      title: const Text(kString_MenuDefaultItemTag,
                           style: TextStyle(color: Colors.white)),
                       children: [
                         RadioListTile(
-                          title: const Text('Urgent',
+                          title: const Text(kString_TagUrgent,
                               style: TextStyle(color: Colors.white)),
                           value: 0,
                           activeColor: const Color(0xFFff6a06),
@@ -94,7 +95,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                           },
                         ),
                         RadioListTile(
-                          title: const Text('Important',
+                          title: const Text(kString_TagImportant,
                               style: TextStyle(color: Colors.white)),
                           value: 1,
                           activeColor: const Color(0xFFff6a06),
@@ -105,7 +106,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                           },
                         ),
                         RadioListTile(
-                          title: const Text('Misc',
+                          title: const Text(kString_TagMisc,
                               style: TextStyle(color: Colors.white)),
                           value: 2,
                           activeColor: const Color(0xFFff6a06),
@@ -116,7 +117,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                           },
                         ),
                         RadioListTile(
-                          title: const Text('Shopping',
+                          title: const Text(kString_TagShopping,
                               style: TextStyle(color: Colors.white)),
                           value: 3,
                           activeColor: const Color(0xFFff6a06),
@@ -132,7 +133,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                 ),
 // ************************** ALL ITEMS FILTER **************************
                 ExpansionTile(
-                  title: const Text('All Items Filter',
+                  title: const Text(kString_MenuAllItemsFilter,
                       style: TextStyle(color: Colors.white)),
                   children: [
                     BlocBuilder<SettingsCubit, SettingsState>(
@@ -140,7 +141,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                         return Column(
                           children: [
                             CheckboxListTile(
-                              title: const Text('Urgent',
+                              title: const Text(kString_TagUrgent,
                                   style: TextStyle(color: Colors.white)),
                               value: (settingsState.allItemsFilter & 8) == 8,
                               onChanged: (value) {
@@ -155,7 +156,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                               checkColor: Colors.white,
                             ),
                             CheckboxListTile(
-                              title: const Text('Important',
+                              title: const Text(kString_TagImportant,
                                   style: TextStyle(color: Colors.white)),
                               value: (settingsState.allItemsFilter & 4) == 4,
                               onChanged: (value) {
@@ -170,7 +171,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                               checkColor: Colors.white,
                             ),
                             CheckboxListTile(
-                              title: const Text('Misc',
+                              title: const Text(kString_TagMisc,
                                   style: TextStyle(color: Colors.white)),
                               value: (settingsState.allItemsFilter & 2) == 2,
                               onChanged: (value) {
@@ -185,7 +186,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                               checkColor: Colors.white,
                             ),
                             CheckboxListTile(
-                              title: const Text('Shopping',
+                              title: const Text(kString_TagShopping,
                                   style: TextStyle(color: Colors.white)),
                               value: (settingsState.allItemsFilter & 1) == 1,
                               onChanged: (value) {
@@ -211,10 +212,10 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
 // ************************** DELETE/EDIT HELP **************************
             ExpansionTile(
               leading: const Icon(Icons.question_mark, color: Colors.white),
-              title: const Text('Delete/Edit Help',
+              title: const Text(kString_MenuHelp,
                   style: TextStyle(color: Colors.white, fontSize: 16)),
               children: [
-                const Text("To delete, slide the item to the right:",
+                const Text(kString_HelpDelete,
                     style: TextStyle(color: Colors.white)),
                 const SizedBox(height: 10),
                 Container(
@@ -222,13 +223,13 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                       vertical: 5.0, horizontal: 10.0),
                   alignment: Alignment.center,
                   child: Image.asset(
-                    'assets/images/delete_screenshot.png',
+                    kString_ImageDelete,
                     width: double.infinity,
                     fit: BoxFit.fitWidth,
                   ),
                 ),
                 const SizedBox(height: 25),
-                const Text("To edit, slide the item to the left:",
+                const Text(kString_HelpEdit,
                     style: TextStyle(color: Colors.white)),
                 const SizedBox(height: 10),
                 Container(
@@ -236,7 +237,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
                       vertical: 5.0, horizontal: 10.0),
                   alignment: Alignment.center,
                   child: Image.asset(
-                    'assets/images/edit_screenshot.png',
+                    kString_ImageEdit,
                     width: double.infinity,
                     fit: BoxFit.fitWidth,
                   ),
@@ -246,7 +247,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
             const SizedBox(height: 10),
             ListTile(
               leading: const Icon(Icons.email, color: Colors.white),
-              title: const Text('Contact/Support',
+              title: const Text(kString_MenuSupport,
                   style: TextStyle(color: Colors.white, fontSize: 16)),
               onTap: () {
                 _sendEmail(context);
@@ -256,7 +257,7 @@ class _kDrawer_MenuState extends State<kDrawer_Menu> {
             const SizedBox(height: 10),
             ListTile(
               leading: const Icon(Icons.balance, color: Colors.white),
-              title: const Text('Legal',
+              title: const Text(kString_MenuLegal,
                   style: TextStyle(color: Colors.white, fontSize: 16)),
               onTap: () {
                 log("Legal menu option selected.");

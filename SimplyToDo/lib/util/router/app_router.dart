@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit.dart';
-import 'package:simply_todo/screens/calendar_screen.dart';
-import 'package:simply_todo/screens/home_screen.dart';
-import 'package:simply_todo/screens/legal_screen.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit.dart';
+import 'package:simply_todo/view/screens/calendar_screen.dart';
+import 'package:simply_todo/view/screens/home_screen.dart';
+import 'package:simply_todo/view/screens/legal_screen.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings rs) {

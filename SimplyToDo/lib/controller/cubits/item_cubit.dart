@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit_state.dart';
-import 'package:simply_todo/data/database/database_helper.dart';
-import 'package:simply_todo/data/models/item.dart';
+import 'package:simply_todo/controller/cubits/item_cubit_state.dart';
+import 'package:simply_todo/model/data_models/database/database_helper.dart';
+import 'package:simply_todo/model/object_models/item.dart';
 
 class ItemCubit extends Cubit<ItemState> {
   final DatabaseHelper dbHelper;

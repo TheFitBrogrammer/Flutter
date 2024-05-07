@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simply_todo/util/values/strings.dart';
 
 // ignore: camel_case_types
 class kAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -27,7 +28,7 @@ class kAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: const TextStyle(
-          fontFamily: 'DancingScript',
+          fontFamily: kString_TitleFontFamily,
           fontWeight: FontWeight.bold,
           fontSize: 40,
           color: Colors.white,

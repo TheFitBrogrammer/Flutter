@@ -2,17 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit_state.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit.dart';
-import 'package:simply_todo/util/forms/add_item_form.dart';
-import 'package:simply_todo/util/forms/edit_item_form.dart';
+import 'package:simply_todo/controller/cubits/item_cubit.dart';
+import 'package:simply_todo/controller/cubits/item_cubit_state.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit.dart';
+import 'package:simply_todo/util/values/strings.dart';
+import 'package:simply_todo/view/forms/add_item_form.dart';
+import 'package:simply_todo/view/forms/edit_item_form.dart';
 import 'package:simply_todo/util/values/enums.dart';
-import 'package:simply_todo/util/widgets/app_bars/app_bar.dart';
-import 'package:simply_todo/util/widgets/app_bars/bottom_bar.dart';
-import 'package:simply_todo/util/widgets/buttons/floating_button.dart';
-import 'package:simply_todo/util/widgets/item_list/item_list_builder.dart';
-import 'package:simply_todo/util/widgets/menu/menu_drawer.dart';
+import 'package:simply_todo/view/widgets/app_bars/app_bar.dart';
+import 'package:simply_todo/view/widgets/app_bars/bottom_bar.dart';
+import 'package:simply_todo/view/widgets/buttons/floating_button.dart';
+import 'package:simply_todo/view/widgets/item_list/item_list_builder.dart';
+import 'package:simply_todo/view/widgets/menu/menu_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   final SettingsCubit settingsCubit;
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final itemCubit = context.read<ItemCubit>();
     return Scaffold(
       appBar: kAppBar(
-        title: "Simply ToDo",
+        title: kString_Title,
         hasAction: true,
         icon: Icons.calendar_month,
         onActionTapped: () {
@@ -61,10 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Tap the '+' to add an item."),
+                  Text(kString_Tip1),
                   SizedBox(height: 25),
-                  Text("Tap the calendar icon in the upper right corner"),
-                  Text("to view your calendar."),
+                  Text(kString_Tip2),
+                  Text(kString_Tip3),
                 ],
               ),
             );

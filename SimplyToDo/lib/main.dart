@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit_state.dart';
-import 'package:simply_todo/data/database/database_helper.dart';
-import 'package:simply_todo/screens/home_screen.dart';
+import 'package:simply_todo/controller/cubits/item_cubit.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit_state.dart';
+import 'package:simply_todo/model/data_models/database/database_helper.dart';
+import 'package:simply_todo/view/screens/home_screen.dart';
 import 'package:simply_todo/util/router/app_router.dart';
-// import 'package:simply_todo/util/services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize the database
   await DatabaseHelper.instance.database;
-  // Initialize shared preferences
   final prefs = await SharedPreferences.getInstance();
   bool darkMode = prefs.getBool('dark_mode') ?? false;
   int allItemsFilter = prefs.getInt('all_items_filter') ?? 15;

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit_state.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(SettingsState settingsState) : super(SettingsState()) {

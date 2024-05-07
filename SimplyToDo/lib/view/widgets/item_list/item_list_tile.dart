@@ -1,9 +1,10 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
-import 'package:simply_todo/data/models/item.dart';
+import 'package:simply_todo/controller/cubits/item_cubit.dart';
+import 'package:simply_todo/model/object_models/item.dart';
 import 'package:simply_todo/util/values/enums.dart';
+import 'package:simply_todo/util/values/strings.dart';
 
 // ignore: camel_case_types
 class kItemListTile extends StatelessWidget {
@@ -87,7 +88,7 @@ Widget buildSlidableItem(
             } else {
               scaffoldMessenger.showSnackBar(
                 const SnackBar(
-                  content: Text('ERROR: Failed to delete item'),
+                  content: Text(kString_ToastErrorDelete),
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -97,7 +98,7 @@ Widget buildSlidableItem(
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
           icon: Icons.delete,
-          label: 'Delete',
+          label: kString_LabelDelete,
         ),
       ],
     ),
@@ -112,7 +113,7 @@ Widget buildSlidableItem(
           backgroundColor: Colors.cyan,
           foregroundColor: Colors.white,
           icon: Icons.edit,
-          label: 'Edit',
+          label: kString_LabelEdit,
         ),
       ],
     ),

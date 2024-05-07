@@ -1,10 +1,11 @@
 import 'dart:developer';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
-import 'package:simply_todo/data/models/item.dart';
+import 'package:simply_todo/controller/cubits/item_cubit.dart';
+import 'package:simply_todo/model/object_models/item.dart';
 import 'package:simply_todo/util/values/enums.dart';
-import 'package:simply_todo/util/widgets/buttons/submit_button.dart';
+import 'package:simply_todo/util/values/strings.dart';
+import 'package:simply_todo/view/widgets/buttons/submit_button.dart';
 
 void showEditItemForm(BuildContext homeContext, ItemCubit itemCubit,
     TextEditingController textController, Item item, bool darkMode) {
@@ -46,7 +47,7 @@ void showEditItemForm(BuildContext homeContext, ItemCubit itemCubit,
                           fillColor:
                               darkMode ? const Color(0xFF1F1D1D) : Colors.white,
                           filled: true,
-                          labelText: "Item Title",
+                          labelText: kString_FormItemTitle,
                           hintText: "",
                           labelStyle: TextStyle(
                               color: darkMode ? Colors.grey : Colors.black),
@@ -80,7 +81,7 @@ void showEditItemForm(BuildContext homeContext, ItemCubit itemCubit,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text("Tag as:"),
+                              const Text(kString_FormItemTag),
                               const SizedBox(width: 15),
                               DropdownButton<ItemCategory>(
                                 style: Theme.of(context).textTheme.bodyLarge,
@@ -151,7 +152,7 @@ void showEditItemForm(BuildContext homeContext, ItemCubit itemCubit,
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white),
                             ),
-                            child: const Text("Add to Calendar"),
+                            child: const Text(kString_FormAddToCalendar),
                           ),
                         ],
                       ),
@@ -159,14 +160,14 @@ void showEditItemForm(BuildContext homeContext, ItemCubit itemCubit,
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
-                            'Selected Date: ${pickedDate!.month.toString().padLeft(2, '0')}/'
+                            '$kString_FormSelectedDate ${pickedDate!.month.toString().padLeft(2, '0')}/'
                             '${pickedDate!.day.toString().padLeft(2, '0')}/'
                             '${pickedDate!.year}',
                           ),
                         ),
                       const Spacer(),
                       kButton_Submit(
-                        buttonTitle: "Update",
+                        buttonTitle: kString_ButtonUpdateItem,
                         textController: textController,
                         itemCubit: itemCubit,
                         selectedCategory: selectedCategory,
@@ -184,7 +185,7 @@ void showEditItemForm(BuildContext homeContext, ItemCubit itemCubit,
                                 await itemCubit.updateItem(updatedItem);
                             if (success) {
                               scaffoldMessenger.showSnackBar(const SnackBar(
-                                content: Text("Item updated."),
+                                content: Text(kString_ToastItemUpdated),
                                 duration: Duration(milliseconds: 2000),
                               ));
                               navigator.pop();

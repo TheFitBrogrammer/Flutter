@@ -2,14 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit_state.dart';
-import 'package:simply_todo/data/bloc/cubits/settings_cubit.dart';
-import 'package:simply_todo/data/models/item.dart';
-import 'package:simply_todo/util/forms/edit_item_form.dart';
+import 'package:simply_todo/controller/cubits/item_cubit.dart';
+import 'package:simply_todo/controller/cubits/item_cubit_state.dart';
+import 'package:simply_todo/controller/cubits/settings_cubit.dart';
+import 'package:simply_todo/model/object_models/item.dart';
+import 'package:simply_todo/util/values/strings.dart';
+import 'package:simply_todo/view/forms/edit_item_form.dart';
 import 'package:simply_todo/util/values/enums.dart';
-import 'package:simply_todo/util/widgets/app_bars/app_bar.dart';
-import 'package:simply_todo/util/widgets/item_list/item_list_builder.dart';
+import 'package:simply_todo/view/widgets/app_bars/app_bar.dart';
+import 'package:simply_todo/view/widgets/item_list/item_list_builder.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -52,7 +53,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const kAppBar(
-        title: "Calendar",
+        title: kString_CalendarTitle,
         hasAction: false,
         hasLeading: false,
       ),

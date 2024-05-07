@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simply_todo/data/bloc/cubits/item_cubit.dart';
+import 'package:simply_todo/controller/cubits/item_cubit.dart';
 import 'package:simply_todo/util/values/enums.dart';
 
 // ignore: camel_case_types
