@@ -32,7 +32,7 @@ void showAddItemForm(BuildContext homeContext, ItemCubit itemCubit,
 
   showModalBottomSheet(
       context: homeContext,
-      isScrollControlled: Platform.isAndroid ? false : true,
+      isScrollControlled: Platform.isAndroid ? false : false,
       builder: (BuildContext context) {
         return GestureDetector(
           onTap: () {
