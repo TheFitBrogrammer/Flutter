@@ -1,0 +1,38 @@
+Privacy Policy
+
+Last updated: 07/15/2023
+
+This Privacy Policy describes the policies and procedures of Eric S. Mullen ("we", "us", or "our") on the collection, use, and disclosure of your information when you use the Simply ToDo mobile application (the "App").
+
+We do not collect or share personal information. That is our privacy policy in short.
+
+1. Information Collection and Use
+
+While using our App, we do not ask you to provide us with any personally identifiable information. The App does not collect any personal data, including but not limited to names, email addresses, or phone numbers.
+
+All data and information entered into the App is stored locally on your device and is not transferred, stored, or backed up on any of our servers or external services.
+
+2. Downloads
+
+Please note that any data or information you choose to download will be stored in a to-be-determined cloud server. Currently the app does not have any download functionality.
+
+3. Log Data
+
+We want to inform you that whenever you use our App, in a case of an error in the App, we do not collect data and information (through third-party products) on your phone called Log Data.
+
+4. Security
+
+The security of your Personal Information is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.
+
+5. Changes to This Privacy Policy
+
+We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
+
+6. Contact Us
+
+If you have any questions about this Privacy Policy, please contact us.
+
+Developer Contact Information:
+
+Eric S. Mullen
+Las Vegas, NV, USA
