@@ -1,0 +1,39 @@
+# Simply ToDo App FAQ
+
+## Getting Started
+
+### How do I download and install Simply ToDo?
+
+Simply ToDo is available for download on the App Store. Just search for "Simply ToDo" and click "Get" to download.
+
+### Is Simply ToDo free?
+
+Yes, Simply ToDo is completely free to use and does not contain any in-app purchases or advertisements.
+
+## Features
+
+### What can I track with Simply ToDo?
+
+With Simply ToDo, you can add, edit, or delete items or tasks, as well as add them to a calendar for reference. 
+
+### How do I change which items show up under the "All Items" tab?
+
+Go to the "Settings" menu in the upper left corner of the app, then select the "All Items Filter" drop-down.
+
+### How do I change the default item/task "tag" when adding a new item/task?
+
+Go to the "Settings" menu in the upper left corner of the app, then select the "ADefault Item Tag" drop-down.
+
+## Troubleshooting
+
+### What should I do if the app crashes?
+
+If the app crashes, try restarting it or your device. If the problem persists, please uninstall and reinstall the app, or send a report to the developer at mulltechsoftware@gmail.com. 
+
+### I found a bug, where should I report it?
+
+If you've found a bug, please email us at mulltechsoftware@gmail.com with a description of the issue and any relevant screenshots.
+
+## Contact
+
+For further assistance or enquiries, feel free to reach us at mulltechsoftware@gmail.com.
